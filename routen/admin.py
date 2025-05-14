@@ -17,4 +17,4 @@ def route_admin_auth(mode):
     elif mode == 'register':
         return admin_register(username, password)
     else:
-        return "[Fehler]: Ungültiger Modus.", 400
+        return "Ungültiger Modus.", 400

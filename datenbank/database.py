@@ -80,47 +80,47 @@ def delete_event(id):
     try:
         event = Event.query.get(id)
         if not event:
-            error_message(f"Kein Event mit ID {id} gefunden.")
-            return "[Datenbank Fehler]: Kein passendes Event gefunden!", 404
+            error_message(f"[Datenbank Fehler]: Kein Event mit ID {id} gefunden.")
+            return "Kein passendes Event gefunden!", 404
 
         db.session.delete(event)
         db.session.commit()
 
-        success_message(f"Event mit ID {id} erfolgreich gelöscht.")
-        return "[Datenbank Erfolg]: Event wurde gelöscht.", 200
+        success_message(f"[Datenbank Erfolg]: Event mit ID {id} erfolgreich gelöscht.")
+        return "Event wurde gelöscht.", 200
 
     except Exception as e:
-        error_message(f"Fehler beim Löschen des Events: {str(e)}")
-        return "[Datenbank Fehler]: Event konnte nicht gelöscht werden.", 500
+        error_message(f"[Datenbank Fehler]: Fehler beim Löschen des Events: {str(e)}")
+        return "Event konnte nicht gelöscht werden.", 500
     
 def admin_register(username, password):
     try:
         if Admin.query.filter_by(username=username).first():
-            error_message(f"Registrierung fehlgeschlagen: Benutzer '{username}' existiert bereits.")
-            return "[Fehler]: Benutzername bereits vergeben.", 409
+            error_message(f"[Datenbank Fehler]: Registrierung fehlgeschlagen: Benutzer '{username}' existiert bereits.")
+            return "Benutzername bereits vergeben.", 409
 
         hashed_pw = generate_password_hash(password)
         new_admin = Admin(username=username, password=hashed_pw)
         db.session.add(new_admin)
         db.session.commit()
 
-        success_message(f"Admin '{username}' erfolgreich registriert.")
-        return "[Erfolg]: Registrierung erfolgreich.", 201
+        success_message(f"[Datenbank Erfolg]: Admin '{username}' erfolgreich registriert.")
+        return "Registrierung erfolgreich.", 201
 
     except Exception as e:
-        error_message(f"Fehler bei Registrierung: {str(e)}")
-        return "[Fehler]: Interner Fehler bei Registrierung.", 500
+        error_message(f"[Datenbank Fehler]: Fehler bei Registrierung: {str(e)}")
+        return "Interner Fehler bei Registrierung.", 500
 
 def admin_login(username, password):
     try:
         admin = Admin.query.filter_by(username=username).first()
         if not admin or not check_password_hash(admin.password, password):
-            error_message(f"Login fehlgeschlagen für Benutzer '{username}'.")
-            return "[Fehler]: Ungültiger Benutzername oder Passwort.", 401
+            error_message(f"[Datenbank Fehler]: Login fehlgeschlagen für Benutzer '{username}'.")
+            return "Ungültiger Benutzername oder Passwort.", 401
 
-        success_message(f"Admin '{username}' erfolgreich eingeloggt.")
-        return "[Erfolg]: Login erfolgreich.", 200
+        success_message(f"[Datenbank Erfolg]: Admin '{username}' erfolgreich eingeloggt.")
+        return "Login erfolgreich.", 200
 
     except Exception as e:
-        error_message(f"Fehler beim Login: {str(e)}")
-        return "[Fehler]: Interner Fehler beim Login.", 500
+        error_message(f"[Datenbank Fehler]: Fehler beim Login: {str(e)}")
+        return "Interner Fehler beim Login.", 500

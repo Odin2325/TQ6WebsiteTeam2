@@ -29,7 +29,7 @@ def dashboard():
 def admin_login_page():
     return render_template("admin_login.html")
 
-@app.route('/admin/dashboard', methods=['POST'])
+@app.route('/admin/dashboard', methods=['GET'])
 def admin_dashboard():
     return render_template("admin_dashboard.html")
 

@@ -43,3 +43,15 @@ delete_Event (event löschen) 🆗
 
 - <strong>/events/delete/<int:id></strong>
 →  löscht ein Event
+
+
+<h2><strong>ToDo´s:</strong></h2>
+
+- Server 🆗
+- Admin Login html 🆗
+- Admin Login js 🆗
+- Admin Dashboard
+#####################################################################################################
+- Dashboard
+- Dashboard css
+- Dashboard js
