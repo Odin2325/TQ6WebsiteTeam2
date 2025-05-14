@@ -11,3 +11,9 @@ class Event(db.Model):
         location = db.Column(db.String(100), nullable=False)
         category = db.Column(db.String(100), nullable=False)
         likes = db.Column(db.Integer, default=0)
+
+class Admin(db.Model):
+        __tablename__='admins'
+        id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+        username = db.Column(db.String(100), nullable=False)
+        password = db.Column(db.String(100), nullable=False)
