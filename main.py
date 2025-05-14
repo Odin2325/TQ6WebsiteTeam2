@@ -1,28 +1,39 @@
-from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, jsonify
+from database import init_database, db, create_db
+from pathlib import Path
+from utils.message import success_message
+from database import Event
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///events.db'
 
-events = SQLAlchemy(app)
-class Event(events.Model):
-    id = events.Column(events.Integer, primary_key=True)
-    name = events.Column(events.String(100), nullable=False)
-    date = events.Column(events.String(100), nullable=False)
-    description = events.Column(events.String(200), nullable=False)
-    location = events.Column(events.String(100), nullable=False)
-    category = events.Column(events.String(100), nullable=False)
-    likes = events.Column(events.Integer, default=0)
+db_dir = Path(__file__).parent / "databases"
+db_dir.mkdir(exist_ok=True)
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_dir / f'events.db'}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-#categories: workshops, sport, concerts, exhibitions, conferences
+db.init_app(app)
+create_db("events")
 
-workhop1 = Event(name='Python Workshop', date='2023-10-01', description='Learn Python from scratch', location='Room 101', category='workshops')
-workhop2 = Event(name='Flask Workshop', date='2023-10-02', description='Learn Flask for web development', location='Room 102', category='workshops')
-sportEvent1 = Event(name='Football Match', date='2023-10-03', description='Local team vs. rivals', location='Stadium', category='sport')
-sportEvent2 = Event(name='Basketball Game', date='2023-10-04', description='Local team vs. rivals', location='Arena', category='sport')
-concert1 = Event(name='Rock Concert', date='2023-10-05', description='Live rock music', location='Concert Hall', category='concerts')
+@app.route('/events/getall', methods=['GET'])
+def get_events():
+    allEvents = Event.query.all()
+    return jsonify([
+        {'id': event.id, 'name': event.name, 'date': event.date, 'description': event.description, 'location': event.location, 'category': event.category, 'likes': event.likes}
+        for event in allEvents
+    ])
+
+@app.route('/events/getlikes', methods=['GET'])
+def get_events():
+    allEvents = Event.query.all()
+    return jsonify([
+        {'likes': event.likes}
+        for event in allEvents
+    ])
+
+@app.route('/events/addlike/<id>', methods=['POST'])
+def get_events():
+    
 
 if __name__ == '__main__':
-    with app.app_context():
-        events.create_all()
+    success_message("Server is running...")
     app.run(debug=True)
