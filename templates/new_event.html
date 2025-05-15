@@ -2,64 +2,53 @@
 <html lang="de">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Neue Veranstaltung</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .message {
-      text-align: center;
-      font-weight: bold;
-      padding: 10px;
-    }
-  </style>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-blue-100 min-h-screen font-sans">
 
-  <!-- Form Container -->
-  <div class="bg-white border border-gray-200 shadow-xl rounded-2xl p-8 w-full max-w-md relative"
-    id="eventFormContainer">
+  <!-- Header -->
+  <header class="bg-blue-600 shadow mb-10">
+    <div class="max-w-4xl mx-auto px-6 py-6">
+      <h1 class="text-3xl font-bold text-gray-800">Neue Veranstaltung erstellen</h1>
+    </div>
+  </header>
 
-    <!-- Close Button (X) -->
-    <button onclick="closeForm()"
-      class="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl font-bold focus:outline-none">
-      &times;
-    </button>
-
-    <!-- Title -->
-    <h2 class="text-2xl font-bold mb-6 text-center">Neue Veranstaltung</h2>
-
-    <!-- Form -->
-    <form id="eventForm" class="space-y-4">
+  <main class="max-w-4xl mx-auto bg-gradient-to-b  shadow-lg rounded-xl p-8 border border-gray-300 bg-white">
+    <form id="eventForm" class="space-y-6">
 
       <div>
         <label for="name" class="block text-sm font-medium text-gray-700">Veranstaltungsname</label>
         <input type="text" id="name" required
-          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+          class="border mt-1 w-full rounded-md border-blue-500 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-4 py-2" />
       </div>
 
       <div>
         <label for="description" class="block text-sm font-medium text-gray-700">Beschreibung</label>
-        <textarea id="description" rows="3" required
-          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+        <textarea id="description" rows="4" required
+          class="border mt-1 w-full rounded-md border-blue-500 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-4 py-2"></textarea>
       </div>
 
-      <div>
-        <label for="date" class="block text-sm font-medium text-gray-700">Datum</label>
-        <input type="date" id="date" required
-          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="date" class="block text-sm font-medium text-gray-700">Datum</label>
+          <input type="date" id="date" required
+            class="border mt-1 w-full rounded-md border-blue-500 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-4 py-2" />
+        </div>
 
-      <div>
-        <label for="location" class="block text-sm font-medium text-gray-700">Ort</label>
-        <input type="text" id="location" required
-          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+        <div>
+          <label for="location" class="block text-sm font-medium text-gray-700">Ort</label>
+          <input type="text" id="location" required
+            class=" mt-1 w-full rounded-md border border-blue-500 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-4 py-2" />
+        </div>
       </div>
 
       <div>
         <label for="category" class="block text-sm font-medium text-gray-700">Kategorie</label>
         <select id="category" required
-          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+          class="border mt-1 w-full rounded-md border-blue-500 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-4 py-2">
           <option value="">Kategorie wählen</option>
           <option value="Workshop">Workshop</option>
           <option value="Seminar">Seminar</option>
@@ -67,21 +56,23 @@
         </select>
       </div>
 
-      
-
-      <!-- Action Buttons -->
-      <div class="flex justify-between space-x-4 pt-4">
+      <!-- Buttons -->
+      <div class="flex justify-end gap-4 pt-4">
+        <button type="button" onclick="window.location.href='/'"
+          class="bg-gray-200 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-300 transition">
+          Zurück
+        </button>
         <button type="submit"
-          class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 shadow">Veranstaltung speichern</button>
-        <button type="button" onclick="closeForm()"
-          class="flex-1 bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400 shadow">Schließen</button>
+          class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition shadow">
+          Veranstaltung speichern
+        </button>
       </div>
-    <!-- Response Message -->
-      <div id="responseMessage" class="message text-sm text-gray-800"></div>
-    </form>
-  </div>
 
-  <!-- JavaScript -->
+      <!-- Response Message -->
+      <div id="responseMessage" class="text-center font-medium pt-2"></div>
+    </form>
+  </main>
+
   <script>
     const form = document.getElementById('eventForm');
     const responseMessage = document.getElementById('responseMessage');
@@ -100,43 +91,32 @@
       try {
         const response = await fetch('/events/create/senden', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
 
-        const text = await response.text(); // Always succeeds
-
+        const text = await response.text();
         let result;
         try {
-          result = JSON.parse(text); // Try to parse JSON
+          result = JSON.parse(text);
         } catch {
-          result = { message: text }; // Fallback: treat plain text as message
+          result = { message: text };
         }
 
         if (response.ok) {
           responseMessage.textContent = result.message;
-          responseMessage.classList.remove('text-red-600');
-          responseMessage.classList.add('text-green-600');
+          responseMessage.className = "text-green-600";
           form.reset();
         } else {
           responseMessage.textContent = result.error || result.message || "Fehler beim Erstellen der Veranstaltung.";
-          responseMessage.classList.remove('text-green-600');
-          responseMessage.classList.add('text-red-600');
+          responseMessage.className = "text-red-600";
         }
       } catch (error) {
         responseMessage.textContent = "Serverfehler – bitte später erneut versuchen.";
-        responseMessage.classList.remove('text-green-600');
-        responseMessage.classList.add('text-red-600');
+        responseMessage.className = "text-red-600";
       }
     });
-
-    function closeForm() {
-      document.getElementById('eventFormContainer').style.display = 'none';
-    }
   </script>
-
 </body>
 
 </html>
