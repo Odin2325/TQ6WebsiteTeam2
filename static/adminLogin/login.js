@@ -68,7 +68,8 @@ window.onload = () => {
                 seconds--;
                 if (seconds < 0) {
                     clearInterval(countdown);
-                    window.location.href = '/admin/dashboard';
+                    localStorage.setItem("Session ID", generateRandomNumber())
+                    window.location.href = '/';
                 }
             }, 1000);
 
@@ -78,4 +79,13 @@ window.onload = () => {
             alert("Serverfehler oder keine Verbindung.");
         }
     });
+}
+
+function generateRandomNumber(pairs = 4) {
+  let result = [];
+  for (let i = 0; i < pairs; i++) {
+    let number = Math.floor(1000 + Math.random() * 9000);
+    result.push(number.toString());
+  }
+  return result.join('-');
 }
