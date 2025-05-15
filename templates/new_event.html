@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Neue Veranstaltung</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .message {
+      text-align: center;
+      font-weight: bold;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <!-- Form Container -->
+  <div class="bg-white border border-gray-200 shadow-xl rounded-2xl p-8 w-full max-w-md relative"
+    id="eventFormContainer">
+
+    <!-- Close Button (X) -->
+    <button onclick="closeForm()"
+      class="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl font-bold focus:outline-none">
+      &times;
+    </button>
+
+    <!-- Title -->
+    <h2 class="text-2xl font-bold mb-6 text-center">Neue Veranstaltung</h2>
+
+    <!-- Form -->
+    <form id="eventForm" class="space-y-4">
+
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Veranstaltungsname</label>
+        <input type="text" id="name" required
+          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-700">Beschreibung</label>
+        <textarea id="description" rows="3" required
+          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+      </div>
+
+      <div>
+        <label for="date" class="block text-sm font-medium text-gray-700">Datum</label>
+        <input type="date" id="date" required
+          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+
+      <div>
+        <label for="location" class="block text-sm font-medium text-gray-700">Ort</label>
+        <input type="text" id="location" required
+          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+
+      <div>
+        <label for="category" class="block text-sm font-medium text-gray-700">Kategorie</label>
+        <select id="category" required
+          class="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md shadow-inner px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+          <option value="">Kategorie wählen</option>
+          <option value="Workshop">Workshop</option>
+          <option value="Seminar">Seminar</option>
+          <option value="Party">Party</option>
+        </select>
+      </div>
+
+      
+
+      <!-- Action Buttons -->
+      <div class="flex justify-between space-x-4 pt-4">
+        <button type="submit"
+          class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 shadow">Veranstaltung speichern</button>
+        <button type="button" onclick="closeForm()"
+          class="flex-1 bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400 shadow">Schließen</button>
+      </div>
+    <!-- Response Message -->
+      <div id="responseMessage" class="message text-sm text-gray-800"></div>
+    </form>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const form = document.getElementById('eventForm');
+    const responseMessage = document.getElementById('responseMessage');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById('name').value,
+        description: document.getElementById('description').value,
+        date: document.getElementById('date').value,
+        location: document.getElementById('location').value,
+        category: document.getElementById('category').value
+      };
+
+      try {
+        const response = await fetch('/events/create/senden', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          responseMessage.textContent = result.message;
+          responseMessage.classList.remove('text-red-600');
+          responseMessage.classList.add('text-green-600');
+          form.reset();
+        } else {
+          responseMessage.textContent = result.error || "Fehler beim Erstellen der Veranstaltung.";
+          responseMessage.classList.remove('text-green-600');
+          responseMessage.classList.add('text-red-600');
+        }
+      } catch (error) {
+        responseMessage.textContent = "Serverfehler – bitte später erneut versuchen.";
+        responseMessage.classList.remove('text-green-600');
+        responseMessage.classList.add('text-red-600');
+      }
+    });
+
+    function closeForm() {
+      document.getElementById('eventFormContainer').style.display = 'none';
+    }
+  </script>
+
+</body>
+
+</html>

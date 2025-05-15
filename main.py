@@ -33,6 +33,10 @@ def admin_login_page():
 def admin_dashboard():
     return render_template("admin_dashboard.html")
 
+@app.route('/events/create', methods=['GET'])
+def event_dashboard():
+    return render_template("new_event.html")
+
 if __name__ == '__main__':
     create_db("events")
     success_message("Server is running...")
