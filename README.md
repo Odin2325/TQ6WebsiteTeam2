@@ -23,6 +23,9 @@ login/register 🆗
 - <strong>/</strong>
 →  dashboard.html
 
+- <strong>/admin</strong>
+→  admin_dashboard.html
+
 - <strong>/admin/<string:mode></strong>
 →  'login' or 'register'
 →  erwartet username und password als json
@@ -51,7 +54,7 @@ login/register 🆗
 ####################################################################################
 - Admin Login html 🆗
 - Admin Login js 🆗
-- Admin Dashboard 🆗
+- Admin Dashboard
 ####################################################################################
 - Dashboard 🆗
 - Dashboard css 🆗
