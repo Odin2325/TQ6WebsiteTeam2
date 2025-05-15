@@ -1,15 +1,18 @@
 # TQ6WebsiteTeam2
 
+# Begonnen 13.05.2025
+
 <h2><strong>Aufgaben:</strong></h2>
 
-/events/<mode>
-get_Events (alle datenbank events raus suchen) --> normal_load 🆗
-new_Event (neues Event anlegen) --> everyone 🆗
-give_like (like zum event hinzufügen) --> everyone 🆗
-get_likes (likes abrufen) --> DomContentLoaded 🆗
+<strong>/events/<mode></strong>
+get_Events (alle datenbank events raus suchen) 🆗
+new_Event (neues Event anlegen) 🆗
+give_like (like zum event hinzufügen) 🆗
+get_likes (likes abrufen) 🆗
 delete_Event (event löschen) 🆗
 
-/admin/<mode>  |  login/register 🆗
+<strong>/admin/<mode></strong>
+login/register 🆗
 
 
 <h2><strong>Info:</strong></h2>
@@ -45,6 +48,7 @@ delete_Event (event löschen) 🆗
 <h2><strong>ToDo´s:</strong></h2>
 
 - Server 🆗
+####################################################################################
 - Admin Login html 🆗
 - Admin Login js 🆗
 - Admin Dashboard 🆗
@@ -53,6 +57,5 @@ delete_Event (event löschen) 🆗
 - Dashboard css 🆗
 - Dashboard js 🆗
 ####################################################################################
-- Modal für Event erstellen
 
-# Mehr Arbeit als nötig🤷‍♂️
+# Fertig - 15.05.2025 - xXGrowGuruXx

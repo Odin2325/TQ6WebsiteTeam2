@@ -171,6 +171,69 @@ for (let btn of modalButtons) {
     });
 }
 
+const openEventModal = document.getElementById("createEventBtn");
+const saveEventBtn = document.getElementById("saveEventBtn");
+const responseMessage = document.getElementById("responseMessage");
+const eventModalEl = document.getElementById('createEvent');
+const eventForm = document.getElementById('eventForm');
+const bsModal = new bootstrap.Modal(eventModalEl);
+
+openEventModal.addEventListener("click", () => {
+    responseMessage.classList.add('d-none');
+    responseMessage.innerText = '';
+    responseMessage.style.border = '';
+    responseMessage.style.color = '';
+    eventForm.reset();
+    bsModal.show();
+});
+
+saveEventBtn.addEventListener("click", () => {
+    const data = {
+        name: document.getElementById("eventName").value,
+        description: document.getElementById("eventDescription").value,
+        date: document.getElementById("eventDate").value,
+        location: document.getElementById("eventLocation").value,
+        category: document.getElementById("eventCategory").value,
+    };
+
+    fetch('/events/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(async res => {
+            const text = await res.text();
+            responseMessage.innerText = text;
+            responseMessage.classList.remove('d-none');
+            if (res.ok) {
+                responseMessage.style.border = '2px solid green';
+                responseMessage.style.color = 'green';
+                setTimeout(() => {
+                    filterEvents();
+                    bsModal.hide();
+                }, 1500);
+            } else {
+                responseMessage.style.border = '2px solid red';
+                responseMessage.style.color = 'red';
+            }
+
+            // Verstecken nach 5 Sekunden
+            setTimeout(() => {
+                responseMessage.classList.add('d-none');
+            }, 5000);
+        })
+        .catch(err => {
+            responseMessage.innerText = 'Fehler: ' + err.message;
+            responseMessage.classList.remove('d-none');
+            responseMessage.style.border = '2px solid red';
+            responseMessage.style.color = 'red';
+            setTimeout(() => {
+                responseMessage.classList.add('d-none');
+            }, 5000);
+        });
+});
 
 // Event-Listener für die Filter
 document.getElementById('event_type').addEventListener('change', filterEvents);
@@ -178,8 +241,7 @@ document.getElementById('start_date').addEventListener('change', filterEvents);
 document.getElementById('end_date').addEventListener('change', filterEvents);
 
 adminButton.addEventListener('click', () => {
-    if (sessionID)
-    {
+    if (sessionID) {
         localStorage.removeItem("Session ID");
         location.reload();
     }

@@ -8,7 +8,7 @@ events_bp = Blueprint('events', __name__, url_prefix='/events')
 def route_add_like(id):
     return add_like(id)
 
-@events_bp.route('/create/senden', methods=['POST'])
+@events_bp.route('/create', methods=['POST'])
 def route_create_event():
     data = request.get_json()
     return create_event(
