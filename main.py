@@ -29,10 +29,6 @@ def dashboard():
 def admin_login_page():
     return render_template("admin_login.html")
 
-@app.route('/admin/dashboard', methods=['GET'])
-def admin_dashboard():
-    return render_template("admin_dashboard.html")
-
 @app.route('/events/create', methods=['GET'])
 def event_dashboard():
     return render_template("new_event.html")
