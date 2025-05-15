@@ -20,9 +20,6 @@ delete_Event (event löschen) 🆗
 - <strong>/</strong>
 →  dashboard.html
 
-- <strong>/admin</strong>
-→  admin_dashboard.html
-
 - <strong>/admin/<string:mode></strong>
 →  'login' or 'register'
 →  erwartet username und password als json
@@ -50,8 +47,12 @@ delete_Event (event löschen) 🆗
 - Server 🆗
 - Admin Login html 🆗
 - Admin Login js 🆗
-- Admin Dashboard
+- Admin Dashboard 🆗
 ####################################################################################
-- Dashboard
-- Dashboard css
-- Dashboard js
+- Dashboard 🆗
+- Dashboard css 🆗
+- Dashboard js 🆗
+####################################################################################
+- Modal für Event erstellen
+
+# Mehr Arbeit als nötig🤷‍♂️
