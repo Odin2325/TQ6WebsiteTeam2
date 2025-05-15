@@ -31,9 +31,9 @@
                         <div class = filter_row>
                             <select id="event_type" class="form-select mx-3" name="event_type">
                                 <option value="all">Alle Events</option>
-                                <option value="workshop">Workshop</option>
-                                <option value="lecture">Vorlesung</option>
-                                <option value="seminar">Seminar</option>
+                                <option value="workshops">Workshop</option>
+                                <option value="sport">Sport</option>
+                                <option value="concerts">Konzert</option>
                             </select>
                             <div>
                                 <label for="start_date">von:</label>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <div class = "container" >
+            <div class = "container px-0 my-3" >
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id = "event_list">
 
                 <!-- Hier werden die Events als Karten eingefügt -->
@@ -74,58 +74,171 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     <script>
-        function updateEvents() {
+        const sessionID = sessionStorage.getItem('sessionID');
+        console.log('Session ID:', sessionID);
+        // function updateEvents() {
+        //     fetch('http://127.0.0.1:7000/events/getall')
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log('Empfangene Daten:', data);
+        //             const eventList = document.getElementById('event_list');
+        //             eventList.innerHTML = ''; // Bestehende Einträge löschen
+        //             data.forEach(event => {
+        //                 const eventItem = document.createElement('div');
+        //                 eventItem.className = 'col';
+        //                 eventItem.innerHTML = `
+        //                     <div class="card h-100">
+        //                         <div class="card-body">
+        //                             <h5 class="card-title text-center text-white card_title_bg">${event.name}</h5>
+        //                             <p class="card-text"><strong>Datum:</strong> ${event.date}</p>
+        //                             <p class="card-text"><strong>Ort:</strong> ${event.location}</p>
+        //                             <div class = "card_centeredContent">
+        //                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal"
+        //                                     onclick='showEventDetails(${JSON.stringify(event)})'>
+        //                                     Details anzeigen
+        //                                 </button>
+                                        
+        //                             </div>
+                                    
+
+        //                         </div>
+        //                     </div>
+        //                 `;
+        //                 eventList.appendChild(eventItem);
+        //             });
+        //         })
+        //         .catch(error => {
+        //             console.error('Fehler beim Laden der Daten:', error)
+        //     });
+        // }
+        // Funktion zum Anzeigen der Event-Details im Modal
+               //Events filtern entsprechend der Auswahl
+        function filterEvents() {
+            const selectedType = document.getElementById('event_type').value;
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+
             fetch('http://127.0.0.1:7000/events/getall')
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Empfangene Daten:', data);
                     const eventList = document.getElementById('event_list');
-                    eventList.innerHTML = ''; // Bestehende Einträge löschen
+                    eventList.innerHTML = '';
+
                     data.forEach(event => {
-                        const eventItem = document.createElement('div');
-                        eventItem.className = 'col';
-                        eventItem.innerHTML = `
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">${event.name}</h5>
-                                    <p class="card-text"><strong>Datum:</strong> ${event.date}</p>
-                                    <p class="card-text"><strong>Ort:</strong> ${event.location}</p>
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal"
-                                        onclick='showEventDetails(${JSON.stringify(event)})'>
-                                        Details anzeigen
-                                    </button>
+                        const eventDate = new Date(event.date);
+                        const from = startDate ? new Date(startDate) : null;
+                        const to = endDate ? new Date(endDate) : null;
+
+                        const matchesType = selectedType === 'all' || event.category === selectedType;
+                        const matchesStart = !from || eventDate >= from;
+                        const matchesEnd = !to || eventDate <= to;
+
+                        if (matchesType && matchesStart && matchesEnd) {
+                            const eventItem = document.createElement('div');
+                            eventItem.className = 'col';
+                            eventItem.innerHTML = `
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center text-white card_title_bg">${event.name}</h5>
+                                        <p class="card-text"><strong>Datum:</strong> ${event.date}</p>
+                                        <p class="card-text"><strong>Ort:</strong> ${event.location}</p>
+                                        <div class="card_centeredContent">
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal"
+                                                onclick='showEventDetails(${JSON.stringify(event)})'>
+                                                Details anzeigen
+                                            </button>
+                                            {% if sessionID %}
+                                                <button type = "button" id = "delete_event">
+                                                    <img src = "..//static/images/mulleimer.png" style = "width: 15px; height: 15px;">
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
-                        eventList.appendChild(eventItem);
+                            `;
+                            eventList.appendChild(eventItem);
+                        }
                     });
                 })
                 .catch(error => {
-                    console.error('Fehler beim Laden der Daten:', error)
-            });
+                    console.error('Fehler beim Laden der Daten:', error);
+                });
         }
-        // Funktion zum Anzeigen der Event-Details im Modal
+        //Ende Filterfunktion
+        function handleLikes(buttonID) {
+            fetch(`http://127.0.0.1/events/addlike/${buttonID}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
+
         function showEventDetails(event) {
             const modalBody = document.getElementById('modalBodyContent');
+            const alreadyLiked = sessionStorage.getItem(`liked_${event.id}`);   //Button zum liken wird disabled wenn der User schon geliket hat
             modalBody.innerHTML = `
                 <p><strong>Name:</strong> ${event.name}</p>
                 <p><strong>Datum:</strong> ${event.date}</p>
                 <p><strong>Ort:</strong> ${event.location}</p>
                 <p><strong>Typ:</strong> ${event.category || 'nicht angegeben'}</p>
                 <p><strong>Beschreibung:</strong><br>${event.description || 'Keine Beschreibung vorhanden.'}</p>
+                <p><strong>Likes:</strong> <span id="likeCount">${event.likes || 0}</span></p>
+                <button type="button" class="btn btn-primary" id = "likeButton" data-id = "$event.id">Liken</button>
             `;
+            const likeButton = document.getElementById('likeButton');
+            likeButton?.addEventListener('click', function () {
+            const eventId = this.getAttribute('data-id');
+
+            fetch(`127.0.0.1:7000/events/addlike/${eventId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Fehler beim Liken");
+                return response.text();
+            })
+            .then(() => {
+                // Liken für diese Sitzung merken
+                sessionStorage.setItem(`liked_${eventId}`, 'true');
+
+                // Button deaktivieren
+                likeButton.disabled = true;
+
+                // Likes aus /getlikes abrufen
+                return fetch('/getlikes');
+            })
+            .then(res => res.json())
+            .then(likesList => {
+                const current = likesList.find(e => e.id == event.id);
+                if (current) {
+                    document.getElementById('likeCount').innerText = current.likes;
+                }
+            })
+            .catch(error => {
+                console.error("Fehler beim Liken:", error);
+            });
+    });
         }
 
-        updateEvents();
+        filterEvents();
 
         // Eventlistener für die Modal-Buttons
-        document.getElementsByClassName("myModal").forEach(button => {
-            button.addEventListener("click", function() {
-                const eventId = this.id;
-                showDetails(eventId);
+        const modalButtons = document.getElementsByClassName("myModal");
+        for (let btn of modalButtons) {
+            btn.addEventListener("click", function() {
+            const eventId = this.id;
+            showDetails(eventId);
             });
-        });
-            
+        }
+
+ 
+        // Event-Listener für die Filter
+        document.getElementById('event_type').addEventListener('change', filterEvents);
+        document.getElementById('start_date').addEventListener('change', filterEvents);
+        document.getElementById('end_date').addEventListener('change', filterEvents);
     </script>
 </body>
 

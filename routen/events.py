@@ -41,4 +41,4 @@ def get_events():
 @events_bp.route('/getlikes', methods=['GET'])
 def get_likes():
     allEvents = Event.query.all()
-    return jsonify([{'likes': e.likes} for e in allEvents])
+    return jsonify([{'likes': e.likes,'id':e.id} for e in allEvents])

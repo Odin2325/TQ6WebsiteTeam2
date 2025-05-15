@@ -66,3 +66,16 @@
 .h2_block{
     display: block;
 }
+
+.card_centeredContent{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.card_title_bg{
+    background: linear-gradient(to right, #4f46e5, #9333ea);
+    padding: 10px;
+    border-radius: 3px;
+}
